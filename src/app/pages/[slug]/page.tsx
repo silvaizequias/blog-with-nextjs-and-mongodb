@@ -1,18 +1,19 @@
-import { actionFindArticleBySlug } from '@/app/core/actions/articleActions'
+import {
+  actionArticleParseContent,
+  actionFindArticleBySlug,
+} from '@/app/core/actions/articleActions'
 import { Metadata } from 'next'
 import { Fragment } from 'react'
 import moment from 'moment'
 import 'moment/locale/pt-br'
-import { remark } from 'remark'
-import html from 'remark-html'
 import { environment } from '@/environments'
+import ArticleView from './views/ArticleView'
 
 export async function generateMetadata({
   params,
-}: Readonly<{
-  params: { slug: string }
-}>): Promise<Metadata | null> {
-  const { slug } = params
+}: // eslint-disable-next-line @typescript-eslint/no-explicit-any
+any): Promise<Metadata | null> {
+  const { slug } = await params
   const article = await actionFindArticleBySlug(slug)
 
   return {
@@ -35,19 +36,12 @@ export async function generateMetadata({
   }
 }
 
-export default async function ArticlePage({
-  params,
-}: Readonly<{
-  params: { slug: string }
-}>) {
-  const { slug } = params
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default async function ArticlePage({ params }: any) {
+  const { slug } = await params
   const article = await actionFindArticleBySlug(slug)
 
-  const parseContent = article
-    ? await remark().use(html).process(article.content)
-    : ''
-
-  const content = parseContent.toString()
+  const content = article && (await actionArticleParseContent(article.content))
 
   const background = article
     ? `https://${article.channel}.${environment.IMG_REPOSITORY}/${article.image}`
@@ -72,14 +66,19 @@ export default async function ArticlePage({
       </header>
       <main className="w-full mx-auto flex flex-col items-center gap-4">
         {article ? (
-          <section className="w-full max-w-7xl p-2 flex flex-col">
-            <article className="w-full mx-auto max-w-7xl flex justify-center items-center">
-              <p
-                dangerouslySetInnerHTML={{ __html: content }}
-                className="text-sky-800 py-4 prose prose-xl text-justify"
-              />
-            </article>
-          </section>
+          <Fragment>
+            <section className="w-full max-w-7xl p-2 flex flex-col">
+              <h6 className="text-sky-800/80 uppercase mb-4">
+                {article.category} | {article.subtitle}
+              </h6>
+              <article className="w-full mx-auto p-4 flex justify-center items-center">
+                <h2 className="text-center text-sky-800 text-pretty font-thin">
+                  {article.resume}
+                </h2>
+              </article>
+            </section>
+            <ArticleView content={content as string} />
+          </Fragment>
         ) : (
           <section className="w-full max-w-7xl p-2 flex flex-col">
             <h2 className="text-center text-balance font-bold uppercase">

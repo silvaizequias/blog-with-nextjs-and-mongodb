@@ -2,9 +2,7 @@ import { MetadataRoute } from 'next'
 import { mainUrl } from './core/helpers'
 import { actionFindManyArticles } from './core/actions/articleActions'
 
-export default async function sitemap(): Promise<
-  MetadataRoute.Sitemap | void | undefined
-> {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const data = await actionFindManyArticles()
   const articles =
     data &&
@@ -15,12 +13,5 @@ export default async function sitemap(): Promise<
       }
     })
 
-  articles.push({
-    url: mainUrl,
-    lastModified: new Date(),
-    changeFrequency: 'weekly',
-    priority: 0.5,
-  })
-
-  return articles
+  return articles as MetadataRoute.Sitemap
 }

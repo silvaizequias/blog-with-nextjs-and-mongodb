@@ -12,10 +12,10 @@ export default function ArticleBoxView({
 
   return (
     <Link href={article.slug}>
-      <div className="w-full max-w-96 p-2 flex flex-col justify-center gap-2 cursor-pointer bg-slate-200/40 rounded-md hover:shadow-md">
+      <div className="w-full max-w-96 flex flex-col justify-center gap-2 cursor-pointer bg-slate-200/40 rounded-md hover:shadow-md">
         <figure>
           <Image
-            className="mx-auto rounded-md hover:opacity-80 hover:animate-pulse"
+            className="mx-auto rounded-t-md hover:opacity-80 hover:animate-pulse"
             src={thumbnail}
             alt={article.title}
             width={380}
@@ -23,8 +23,10 @@ export default function ArticleBoxView({
             priority
           />
         </figure>
-        <small>{moment(article.createdAt).format('ll')}</small>
-        <h3>{article.title}</h3>
+        <div className="mx-auto p-2">
+          <small>{moment(article.createdAt).format('ll')}</small>
+          <h3>{article.title}</h3>
+        </div>
       </div>
     </Link>
   )
