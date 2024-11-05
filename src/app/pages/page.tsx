@@ -16,8 +16,8 @@ export default async function LandingPage() {
         <div className="w-full min-h-48 h-full p-2 pt-10 flex flex-col justify-center items-center text-sky-800/80">
           <div className="mx-auto w-full max-w-7xl flex flex-col justify-center">
             <h1 className="text-center text-white lowercase">Comentando...</h1>
-            <small className="text-center text-slate-900/80">
-              Notícias da atualidade comentadas por uma Inteligência Artificial!
+            <small className="text-center text-slate-900/80 lowercase">
+              Notícias da atualidade comentadas por uma Inteligência
             </small>
           </div>
         </div>

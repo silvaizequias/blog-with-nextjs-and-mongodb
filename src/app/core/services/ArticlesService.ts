@@ -32,7 +32,7 @@ export default class ArticlesService {
     } catch (error) {
       console.error(error)
     } finally {
-      await client.close()
+      //await client.close()
     }
   }
 }
